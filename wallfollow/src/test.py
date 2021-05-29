@@ -213,22 +213,22 @@ def path2(command, cmd_vel_pub):
     command.angular.z = 0.0
     command.linear.x = 0.2
     cmd_vel_pub.publish(command)
-    time.sleep(10)
+    time.sleep(6)
     print("Turn")
-    command.angular.z = 0.3
-    command.linear.x = 0.12
+    command.angular.z = 0.25
+    command.linear.x = 0.18
     cmd_vel_pub.publish(command)
-    time.sleep(6.5)
+    time.sleep(8.65)
     print("Turn")
-    command.angular.z = -0.3
-    command.linear.x = 0.12
+    command.angular.z = -0.25
+    command.linear.x = 0.22
     cmd_vel_pub.publish(command)
-    time.sleep(6.5)
+    time.sleep(8.8)
     print("Forward")
     command.angular.z = 0.0
-    command.linear.x = 0.2
+    command.linear.x = 0.18
     cmd_vel_pub.publish(command)
-    time.sleep(10)
+    time.sleep(6)
     stop_robot(command, cmd_vel_pub)
 
 
@@ -239,7 +239,7 @@ def path3(command, cmd_vel_pub):
     command.angular.z = 0.0
     command.linear.x = 0.2
     cmd_vel_pub.publish(command)
-    time.sleep(10)
+    time.sleep(15)
     print("Turn")
     command.angular.z = -0.3
     command.linear.x = 0.12
@@ -249,7 +249,7 @@ def path3(command, cmd_vel_pub):
     command.angular.z = 0.0
     command.linear.x = 0.2
     cmd_vel_pub.publish(command)
-    time.sleep(10)
+    time.sleep(15)
     stop_robot(command, cmd_vel_pub)
 
 
@@ -282,5 +282,5 @@ rate = rospy.Rate(10)  # Rospy Rate
 time_in_corrido = 0.9
 z = 'inf'
 while not rospy.is_shutdown():
-    path1(command, cmd_vel_pub)
+    path3(command, cmd_vel_pub)
 

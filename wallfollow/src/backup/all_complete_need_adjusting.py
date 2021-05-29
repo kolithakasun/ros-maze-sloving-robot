@@ -322,7 +322,7 @@ while not rospy.is_shutdown():
             # path1(command, cmd_vel_pub)
             if door_count == 1:
                 path1(command, cmd_vel_pub)
-            elif door_count == 1:
+            elif door_count == 2:
                 path2(command, cmd_vel_pub)
             else:
                 path3(command, cmd_vel_pub)
@@ -417,7 +417,7 @@ while not rospy.is_shutdown():
                 # path1(command, cmd_vel_pub)
                 if door_count == 1:
                     path1(command, cmd_vel_pub)
-                elif door_count == 1:
+                elif door_count == 2:
                     path2(command, cmd_vel_pub)
                 else:
                     path3(command, cmd_vel_pub)
