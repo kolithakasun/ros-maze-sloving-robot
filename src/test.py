@@ -48,10 +48,10 @@ def rotate_robot():
     # Turn the robot right at the start
     # to avoid the 'looping wall'
     print("Turning...")
-    command.angular.z = -0.5
+    command.angular.z = 0.5
     command.linear.x = 0.1
     cmd_vel_pub.publish(command)
-    time.sleep(2)
+    time.sleep(1.9)
 
 
 def stop_robot(command, cmd_vel_pub):
@@ -64,13 +64,13 @@ def stop_robot(command, cmd_vel_pub):
 
 def forward(command, cmd_vel_pub):
     command.angular.z = 0.00
-    command.linear.x = 0.175
+    command.linear.x = 0.12
     cmd_vel_pub.publish(command)
 
 
 def forward_slow(command, cmd_vel_pub):
     command.angular.z = 0.00
-    command.linear.x = 0.120
+    command.linear.x = 0.10
     cmd_vel_pub.publish(command)
 
 
@@ -105,7 +105,7 @@ def inf_forward(ranges, command, cmd_vel_pub):
     if check == 0:
         print("seelipng")
         forward(command, cmd_vel_pub)
-        # time.sleep(2)
+        time.sleep(3)
         print("Awaken")
     check = check_in_or_out(ranges)
     if check == 0:
@@ -114,18 +114,6 @@ def inf_forward(ranges, command, cmd_vel_pub):
     else:
         print("Inside Maze")
         return 1
-
-
-def count_doors(ranges, command, cmd_vel_pub, rate):
-    # Move towards right wall
-    rotate_robot_right()
-    time.sleep(5)
-    forward(command, cmd_vel_pub)
-    time.sleep(3.2)
-    rotate_robot_left()
-    time.sleep(3.6)
-    forward_slow(command, cmd_vel_pub)
-    time.sleep(0.2)
 
 
 def rotate_robot_right():
@@ -146,43 +134,16 @@ def rotate_robot_left():
     cmd_vel_pub.publish(command)
 
 
-def follow_right_wall(command, cmd_vel_pub):
-
-    if min_right < 0.3:
-        command.angular.z = -0.2
-        command.linear.x = 0.10
-
-    elif min_right > 0.4:
-        command.angular.z = 0.2
-        command.linear.x = 0.10
-
-    else:
-        command.angular.z = 0.00
-        command.linear.x = 0.120
-
-    cmd_vel_pub.publish(command)
-    # if min_front > 0.3:  # 2
-    #     if min_right < 0.12:  # 3
-    #         print("Range: {:.2f}m is too close, Going backward".format(min_left))
-    #         command.angular.z = -1.2
-    #         command.linear.x = -0.1
-    #
-    #     elif min_right > 0.20:  # 4
-    #         print("Range: {:.2f}m  follwing the wall, turn Right.".format(min_left))
-    #         command.angular.z = -0.75
-    #         command.linear.x = 0.20
-    #
-    #     else:
-    #         print("Range: {:.2f}m follwing the wall, turn left.".format(min_left))
-    #         command.angular.z = 0.75
-    #         command.linear.x = 0.15
-    #     cmd_vel_pub.publish(command)
-    #
-    # else:  # 5
-    #     print("Front obstacle detected. Turning away.")
-    #     command.angular.z = 1.0
-    #     command.linear.x = 0.0
-    #     cmd_vel_pub.publish(command)
+def count_doors(ranges, command, cmd_vel_pub, rate):
+    # Move towards right wall
+    rotate_robot_right()
+    time.sleep(5)
+    forward(command, cmd_vel_pub)
+    time.sleep(3.2)
+    rotate_robot_left()
+    time.sleep(3.6)
+    forward_slow(command, cmd_vel_pub)
+    time.sleep(0.2)
 
 
 def path1(command, cmd_vel_pub):
@@ -213,22 +174,22 @@ def path2(command, cmd_vel_pub):
     command.angular.z = 0.0
     command.linear.x = 0.2
     cmd_vel_pub.publish(command)
-    time.sleep(10)
+    time.sleep(6)
     print("Turn")
-    command.angular.z = 0.3
-    command.linear.x = 0.12
+    command.angular.z = 0.25
+    command.linear.x = 0.18
     cmd_vel_pub.publish(command)
-    time.sleep(6.5)
+    time.sleep(8.65)
     print("Turn")
-    command.angular.z = -0.3
-    command.linear.x = 0.12
+    command.angular.z = -0.25
+    command.linear.x = 0.22
     cmd_vel_pub.publish(command)
-    time.sleep(6.5)
+    time.sleep(8.8)
     print("Forward")
     command.angular.z = 0.0
-    command.linear.x = 0.2
+    command.linear.x = 0.18
     cmd_vel_pub.publish(command)
-    time.sleep(10)
+    time.sleep(6)
     stop_robot(command, cmd_vel_pub)
 
 
@@ -239,7 +200,7 @@ def path3(command, cmd_vel_pub):
     command.angular.z = 0.0
     command.linear.x = 0.2
     cmd_vel_pub.publish(command)
-    time.sleep(10)
+    time.sleep(15)
     print("Turn")
     command.angular.z = -0.3
     command.linear.x = 0.12
@@ -249,7 +210,7 @@ def path3(command, cmd_vel_pub):
     command.angular.z = 0.0
     command.linear.x = 0.2
     cmd_vel_pub.publish(command)
-    time.sleep(10)
+    time.sleep(15)
     stop_robot(command, cmd_vel_pub)
 
 
@@ -276,11 +237,212 @@ cmd_vel_pub = rospy.Publisher('cmd_vel', Twist, queue_size=1)  # to move the rob
 scan_sub = rospy.Subscriber('scan', LaserScan, scan_callback)  # to read the laser scanner
 rospy.init_node('dmkk_node')
 initialization_of_robot()
-# rotate_robot()
+forward_slow(command, cmd_vel_pub)
+rotate_robot()
 rate = rospy.Rate(10)  # Rospy Rate
-
-time_in_corrido = 0.9
 z = 'inf'
-while not rospy.is_shutdown():
-    path1(command, cmd_vel_pub)
+time_in_corrido = 0.94
 
+while not rospy.is_shutdown():
+
+    while near_wall == 0 and not rospy.is_shutdown():  # 1
+        # Check if robot inside maze or not
+        forward_slow(command, cmd_vel_pub)
+        print("Check 1")
+        inside_maze = inf_forward(ranges, command, cmd_vel_pub)
+        if inside_maze == 0:
+            count_doors(ranges, command, cmd_vel_pub, rate)
+            #############################
+            #############################
+            door_count = 0
+            future_time = datetime.datetime.now() + datetime.timedelta(minutes=time_in_corrido)
+            print(future_time)
+            print(datetime.datetime.now())
+
+            while datetime.datetime.now() <= future_time:
+                # print(str(future_time)+"---------" + str(datetime.datetime.now()))
+                y = str(ranges[269])
+                rate.sleep()
+                # print("checking right" + y)
+                if y == z:
+                    print("Door detected")
+                    print("*\n*\n*\n*\n*\n*\n*\n*\n*\n*\n*\n*\n*\n*\n*\n*\n")
+                    door_count += 1
+                    # follow_right_wall(command, cmd_vel_pub)
+                    while y == z:
+                        print("Within the door")
+
+                        if min_front < 0.15:  # 2
+                            print("Inside Door, Front obstacle detected. Turning away.")
+                            command.angular.z = 0.2
+                            command.linear.x = 0.14
+                            cmd_vel_pub.publish(command)
+                        elif min_right < 0.3:
+                            print("111111111111111" + str(min_right))
+                            command.angular.z = 0.21
+                            command.linear.x = 0.1
+                            cmd_vel_pub.publish(command)
+
+                        elif min_right >= 0.65:
+                            print("22222222222222222" + str(min_right))
+                            command.angular.z = -0.13
+                            command.linear.x = 0.11
+                            cmd_vel_pub.publish(command)
+
+                        else:
+                            forward_slow(command, cmd_vel_pub)
+                        rate.sleep()
+                        y = str(ranges[269])
+
+                rate.sleep()
+                x = ranges[269]
+                if min_front < 0.15:  # 2
+                    print("Front obstacle detected. Turning away.")
+                    command.angular.z = 0.2
+                    command.linear.x = 0.14
+                    cmd_vel_pub.publish(command)
+                elif min_right < 0.3:
+                    print("##############" + str(min_right))
+                    command.angular.z = 0.23
+                    command.linear.x = 0.12
+                    cmd_vel_pub.publish(command)
+
+                elif min_right >= 0.65:
+                    print("$$$$$$$$$$$$$$$" + str(min_right))
+                    command.angular.z = -0.11
+                    command.linear.x = 0.11
+                    cmd_vel_pub.publish(command)
+                else:
+                    forward_slow(command, cmd_vel_pub)
+
+            print("2 Meters Completed")
+            print("Door Count: " + str(door_count))
+            forward_slow(command, cmd_vel_pub)
+            time.sleep(1)
+            # path1(command, cmd_vel_pub)
+            if door_count == 1:
+                path1(command, cmd_vel_pub)
+            elif door_count == 2:
+                path2(command, cmd_vel_pub)
+            else:
+                path3(command, cmd_vel_pub)
+            stop_robot(command, cmd_vel_pub)  #############################
+
+        print("Moving towards a wall.")
+        if min_front > 0.2 and min_right > 0.2 and min_left > 0.2:
+            command.angular.z = -0.1  # if nothing near, go forward
+            command.linear.x = 0.10
+        elif min_left < 0.2:  # if wall on left, start tracking
+            near_wall = 1
+        else:
+            command.angular.z = -0.25  # if not on left, turn right
+            command.linear.x = 0.1
+        print("near wall =" + str(near_wall))
+        cmd_vel_pub.publish(command)
+
+    else:  # left wall following
+        # Check if robot inside maze or not
+        print("Check 2")
+        inside_maze = inf_forward(ranges, command, cmd_vel_pub)
+        if inside_maze == 0:
+            if inside_maze == 0:
+                count_doors(ranges, command, cmd_vel_pub, rate)
+                #############################
+                door_count = 0
+                future_time = datetime.datetime.now() + datetime.timedelta(minutes=time_in_corrido)
+                print(future_time)
+                print(datetime.datetime.now())
+
+                while datetime.datetime.now() <= future_time:
+                    # print(str(future_time)+"---------" + str(datetime.datetime.now()))
+                    y = str(ranges[269])
+                    rate.sleep()
+                    # print("checking right" + y)
+                    if y == z:
+                        print("Door detected")
+                        print("*\n*\n*\n*\n*\n*\n*\n*\n*\n*\n*\n*\n*\n*\n*\n*\n")
+                        door_count += 1
+                        # follow_right_wall(command, cmd_vel_pub)
+                        while y == z:
+                            print("Within the door")
+
+                            if min_front < 0.15:  # 2
+                                print("Inside Door, Front obstacle detected. Turning away.")
+                                command.angular.z = 0.2
+                                command.linear.x = 0.14
+                                cmd_vel_pub.publish(command)
+                            elif min_right < 0.3:
+                                print("1" + str(min_right))
+                                command.angular.z = 0.21
+                                command.linear.x = 0.1
+                                cmd_vel_pub.publish(command)
+
+                            elif min_right >= 0.65:
+                                print("2" + str(min_right))
+                                command.angular.z = -0.13
+                                command.linear.x = 0.11
+                                cmd_vel_pub.publish(command)
+
+                            else:
+                                forward_slow(command, cmd_vel_pub)
+                            rate.sleep()
+                            y = str(ranges[269])
+
+                    rate.sleep()
+                    x = ranges[269]
+                    if min_front < 0.15:  # 2
+                        print("Front obstacle detected. Turning away.")
+                        command.angular.z = 0.2
+                        command.linear.x = 0.14
+                        cmd_vel_pub.publish(command)
+                    elif min_right < 0.3:
+                        print("#" + str(min_right))
+                        command.angular.z = 0.23
+                        command.linear.x = 0.12
+                        cmd_vel_pub.publish(command)
+
+                    elif min_right >= 0.65:
+                        print("$" + str(min_right))
+                        command.angular.z = -0.11
+                        command.linear.x = 0.11
+                        cmd_vel_pub.publish(command)
+                    else:
+                        forward(command, cmd_vel_pub)
+
+                print("2 Meters Completed")
+                print("Door Count: " + str(door_count))
+                forward(command, cmd_vel_pub)
+                time.sleep(1)
+                # path1(command, cmd_vel_pub)
+                if door_count == 1:
+                    path1(command, cmd_vel_pub)
+                elif door_count == 2:
+                    path2(command, cmd_vel_pub)
+                else:
+                    path3(command, cmd_vel_pub)
+                stop_robot(command, cmd_vel_pub)  #############################
+
+        if min_front > 0.2:  # 2
+            if min_left < 0.1:  # 3
+                print("Range: {:.2f}m is too close, Going backward".format(min_left))
+                command.angular.z = -1.0
+                command.linear.x = -0.15
+            elif min_left > 0.15:  # 4
+                print("Range: {:.2f}m  follwing the wall, turn left.".format(min_left))
+                command.angular.z = 0.5
+                command.linear.x = 0.12
+            else:
+                print("Range: {:.2f}m follwing the wall, turn right.".format(min_left))
+                command.angular.z = -0.5
+                command.linear.x = 0.12
+
+        else:  # 5
+            print("Front obstacle detected. Turning away.")
+            command.angular.z = -1.0
+            command.linear.x = 0.0
+            cmd_vel_pub.publish(command)
+            print("ranges =" + str(ranges))
+
+        cmd_vel_pub.publish(command)
+        # wait for the loop
+    rate.sleep()

@@ -174,22 +174,22 @@ def path2(command, cmd_vel_pub):
     command.angular.z = 0.0
     command.linear.x = 0.2
     cmd_vel_pub.publish(command)
-    time.sleep(10)
+    time.sleep(6)
     print("Turn")
-    command.angular.z = 0.3
-    command.linear.x = 0.12
+    command.angular.z = 0.25
+    command.linear.x = 0.18
     cmd_vel_pub.publish(command)
-    time.sleep(6.5)
+    time.sleep(8.65)
     print("Turn")
-    command.angular.z = -0.3
-    command.linear.x = 0.12
+    command.angular.z = -0.25
+    command.linear.x = 0.22
     cmd_vel_pub.publish(command)
-    time.sleep(6.5)
+    time.sleep(8.8)
     print("Forward")
     command.angular.z = 0.0
-    command.linear.x = 0.2
+    command.linear.x = 0.18
     cmd_vel_pub.publish(command)
-    time.sleep(10)
+    time.sleep(6)
     stop_robot(command, cmd_vel_pub)
 
 
@@ -200,7 +200,7 @@ def path3(command, cmd_vel_pub):
     command.angular.z = 0.0
     command.linear.x = 0.2
     cmd_vel_pub.publish(command)
-    time.sleep(10)
+    time.sleep(15)
     print("Turn")
     command.angular.z = -0.3
     command.linear.x = 0.12
@@ -210,7 +210,7 @@ def path3(command, cmd_vel_pub):
     command.angular.z = 0.0
     command.linear.x = 0.2
     cmd_vel_pub.publish(command)
-    time.sleep(10)
+    time.sleep(15)
     stop_robot(command, cmd_vel_pub)
 
 
@@ -241,8 +241,7 @@ forward_slow(command, cmd_vel_pub)
 rotate_robot()
 rate = rospy.Rate(10)  # Rospy Rate
 z = 'inf'
-time_in_corrido = 0.9
-
+time_in_corrido = 0.92
 
 while not rospy.is_shutdown():
 
@@ -253,6 +252,7 @@ while not rospy.is_shutdown():
         inside_maze = inf_forward(ranges, command, cmd_vel_pub)
         if inside_maze == 0:
             count_doors(ranges, command, cmd_vel_pub, rate)
+            #############################
             #############################
             door_count = 0
             future_time = datetime.datetime.now() + datetime.timedelta(minutes=time_in_corrido)
@@ -322,12 +322,11 @@ while not rospy.is_shutdown():
             # path1(command, cmd_vel_pub)
             if door_count == 1:
                 path1(command, cmd_vel_pub)
-            elif door_count == 1:
+            elif door_count == 2:
                 path2(command, cmd_vel_pub)
             else:
                 path3(command, cmd_vel_pub)
             stop_robot(command, cmd_vel_pub)  #############################
-
 
         print("Moving towards a wall.")
         if min_front > 0.2 and min_right > 0.2 and min_left > 0.2:
@@ -373,13 +372,13 @@ while not rospy.is_shutdown():
                                 command.linear.x = 0.14
                                 cmd_vel_pub.publish(command)
                             elif min_right < 0.3:
-                                print("111111111111111" + str(min_right))
+                                print("1" + str(min_right))
                                 command.angular.z = 0.21
                                 command.linear.x = 0.1
                                 cmd_vel_pub.publish(command)
 
                             elif min_right >= 0.65:
-                                print("22222222222222222" + str(min_right))
+                                print("2" + str(min_right))
                                 command.angular.z = -0.13
                                 command.linear.x = 0.11
                                 cmd_vel_pub.publish(command)
@@ -397,13 +396,13 @@ while not rospy.is_shutdown():
                         command.linear.x = 0.14
                         cmd_vel_pub.publish(command)
                     elif min_right < 0.3:
-                        print("##############" + str(min_right))
+                        print("#" + str(min_right))
                         command.angular.z = 0.23
                         command.linear.x = 0.12
                         cmd_vel_pub.publish(command)
 
                     elif min_right >= 0.65:
-                        print("$$$$$$$$$$$$$$$" + str(min_right))
+                        print("$" + str(min_right))
                         command.angular.z = -0.11
                         command.linear.x = 0.11
                         cmd_vel_pub.publish(command)
@@ -417,7 +416,7 @@ while not rospy.is_shutdown():
                 # path1(command, cmd_vel_pub)
                 if door_count == 1:
                     path1(command, cmd_vel_pub)
-                elif door_count == 1:
+                elif door_count == 2:
                     path2(command, cmd_vel_pub)
                 else:
                     path3(command, cmd_vel_pub)
@@ -442,7 +441,6 @@ while not rospy.is_shutdown():
             command.angular.z = -1.0
             command.linear.x = 0.0
             cmd_vel_pub.publish(command)
-            print("ranges =" + str(ranges))
 
         cmd_vel_pub.publish(command)
         # wait for the loop

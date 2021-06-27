@@ -241,7 +241,7 @@ forward_slow(command, cmd_vel_pub)
 rotate_robot()
 rate = rospy.Rate(10)  # Rospy Rate
 z = 'inf'
-time_in_corrido = 1.2
+time_in_corrido = 0.92
 
 while not rospy.is_shutdown():
 
