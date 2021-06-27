@@ -139,7 +139,7 @@ def count_doors(ranges, command, cmd_vel_pub, rate):
     rotate_robot_right()
     time.sleep(5)
     forward(command, cmd_vel_pub)
-    time.sleep(2)
+    time.sleep(3.3)
     rotate_robot_left()
     time.sleep(3.6)
     forward_slow(command, cmd_vel_pub)
@@ -153,17 +153,17 @@ def path1(command, cmd_vel_pub):
     command.angular.z = 0.0
     command.linear.x = 0.2
     cmd_vel_pub.publish(command)
-    time.sleep(10)
+    time.sleep(15)
     print("Turn")
     command.angular.z = 0.3
     command.linear.x = 0.12
     cmd_vel_pub.publish(command)
-    time.sleep(12.5)
+    time.sleep(15)
     print("Forward")
     command.angular.z = 0.0
     command.linear.x = 0.2
     cmd_vel_pub.publish(command)
-    time.sleep(7)
+    time.sleep(10)
     stop_robot(command, cmd_vel_pub)
 
 
@@ -174,7 +174,7 @@ def path2(command, cmd_vel_pub):
     command.angular.z = 0.0
     command.linear.x = 0.2
     cmd_vel_pub.publish(command)
-    time.sleep(6)
+    time.sleep(8)
     print("Turn")
     command.angular.z = 0.25
     command.linear.x = 0.18
@@ -189,7 +189,7 @@ def path2(command, cmd_vel_pub):
     command.angular.z = 0.0
     command.linear.x = 0.18
     cmd_vel_pub.publish(command)
-    time.sleep(6)
+    time.sleep(8)
     stop_robot(command, cmd_vel_pub)
 
 
@@ -205,12 +205,12 @@ def path3(command, cmd_vel_pub):
     command.angular.z = -0.3
     command.linear.x = 0.12
     cmd_vel_pub.publish(command)
-    time.sleep(12.35)
+    time.sleep(15)
     print("Forward")
     command.angular.z = 0.0
     command.linear.x = 0.2
     cmd_vel_pub.publish(command)
-    time.sleep(15)
+    time.sleep(10)
     stop_robot(command, cmd_vel_pub)
 
 
@@ -241,7 +241,7 @@ forward_slow(command, cmd_vel_pub)
 rotate_robot()
 rate = rospy.Rate(10)  # Rospy Rate
 z = 'inf'
-time_in_corrido = 1.1
+time_in_corrido = 1
 
 while not rospy.is_shutdown():
 
